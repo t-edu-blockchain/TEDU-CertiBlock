@@ -452,18 +452,18 @@ function networkDown() {
     fatalln "Container CLI  ${CONTAINER_CLI} not supported"
   fi
 
-  # COMPOSE_ORG4_BASE_FILES="-f addOrg4/compose/${COMPOSE_FILE_ORG4_BASE} -f addOrg4/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_ORG4_BASE}"
-  # COMPOSE_ORG4_COUCH_FILES="-f addOrg4/compose/${COMPOSE_FILE_ORG4_COUCH} -f addOrg4/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_ORG4_COUCH}"
-  # COMPOSE_ORG4_CA_FILES="-f addOrg4/compose/${COMPOSE_FILE_ORG4_CA} -f addOrg4/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_ORG4_CA}"
-  # COMPOSE_ORG4_FILES="${COMPOSE_ORG4_BASE_FILES} ${COMPOSE_ORG4_COUCH_FILES} ${COMPOSE_ORG4_CA_FILES}"
+  COMPOSE_ORG4_BASE_FILES="-f addOrg4/compose/${COMPOSE_FILE_ORG4_BASE} -f addOrg4/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_ORG4_BASE}"
+  COMPOSE_ORG4_COUCH_FILES="-f addOrg4/compose/${COMPOSE_FILE_ORG4_COUCH} -f addOrg4/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_ORG4_COUCH}"
+  COMPOSE_ORG4_CA_FILES="-f addOrg4/compose/${COMPOSE_FILE_ORG4_CA} -f addOrg4/compose/${CONTAINER_CLI}/${CONTAINER_CLI}-${COMPOSE_FILE_ORG4_CA}"
+  COMPOSE_ORG4_FILES="${COMPOSE_ORG4_BASE_FILES} ${COMPOSE_ORG4_COUCH_FILES} ${COMPOSE_ORG4_CA_FILES}"
 
-  # if [ "${CONTAINER_CLI}" == "docker" ]; then
-  #   DOCKER_SOCK=$DOCKER_SOCK ${CONTAINER_CLI_COMPOSE} ${COMPOSE_FILES} ${COMPOSE_ORG4_FILES} down --volumes --remove-orphans
-  # elif [ "${CONTAINER_CLI}" == "podman" ]; then
-  #   ${CONTAINER_CLI_COMPOSE} ${COMPOSE_FILES} ${COMPOSE_ORG4_FILES} down --volumes
-  # else
-  #   fatalln "Container CLI  ${CONTAINER_CLI} not supported"
-  # fi
+  if [ "${CONTAINER_CLI}" == "docker" ]; then
+    DOCKER_SOCK=$DOCKER_SOCK ${CONTAINER_CLI_COMPOSE} ${COMPOSE_FILES} ${COMPOSE_ORG4_FILES} down --volumes --remove-orphans
+  elif [ "${CONTAINER_CLI}" == "podman" ]; then
+    ${CONTAINER_CLI_COMPOSE} ${COMPOSE_FILES} ${COMPOSE_ORG4_FILES} down --volumes
+  else
+    fatalln "Container CLI  ${CONTAINER_CLI} not supported"
+  fi
 
   COMPOSE_FILE_BASE=$temp_compose
 
@@ -482,7 +482,7 @@ function networkDown() {
     ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/hus/msp organizations/fabric-ca/hus/tls-cert.pem organizations/fabric-ca/hus/ca-cert.pem organizations/fabric-ca/hus/IssuerPublicKey organizations/fabric-ca/hus/IssuerRevocationPublicKey organizations/fabric-ca/hus/fabric-ca-server.db'
     ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf organizations/fabric-ca/ordererOrg/msp organizations/fabric-ca/ordererOrg/tls-cert.pem organizations/fabric-ca/ordererOrg/ca-cert.pem organizations/fabric-ca/ordererOrg/IssuerPublicKey organizations/fabric-ca/ordererOrg/IssuerRevocationPublicKey organizations/fabric-ca/ordererOrg/fabric-ca-server.db'
     ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf addOrg3/fabric-ca/org3/msp addOrg3/fabric-ca/org3/tls-cert.pem addOrg3/fabric-ca/org3/ca-cert.pem addOrg3/fabric-ca/org3/IssuerPublicKey addOrg3/fabric-ca/org3/IssuerRevocationPublicKey addOrg3/fabric-ca/org3/fabric-ca-server.db'
-    # ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf addOrg4/fabric-ca/org4/msp addOrg4/fabric-ca/org4/tls-cert.pem addOrg4/fabric-ca/org4/ca-cert.pem addOrg4/fabric-ca/org4/IssuerPublicKey addOrg4/fabric-ca/org4/IssuerRevocationPublicKey addOrg4/fabric-ca/org4/fabric-ca-server.db'
+    ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf addOrg4/fabric-ca/org4/msp addOrg4/fabric-ca/org4/tls-cert.pem addOrg4/fabric-ca/org4/ca-cert.pem addOrg4/fabric-ca/org4/IssuerPublicKey addOrg4/fabric-ca/org4/IssuerRevocationPublicKey addOrg4/fabric-ca/org4/fabric-ca-server.db'
     ${CONTAINER_CLI} run --rm -v "$(pwd):/data" busybox sh -c 'cd /data && rm -rf channel-artifacts log.txt *.tar.gz'
   fi
 }
@@ -502,11 +502,11 @@ COMPOSE_FILE_ORG3_COUCH=compose-couch-org3.yaml
 # certificate authorities compose file
 COMPOSE_FILE_ORG3_CA=compose-ca-org3.yaml
 #
-# COMPOSE_FILE_ORG4_BASE=compose-org4.yaml
-# # use this as the docker compose couch file for org4
-# COMPOSE_FILE_ORG4_COUCH=compose-couch-org4.yaml
-# # certificate authorities compose file
-# COMPOSE_FILE_ORG4_CA=compose-ca-org4.yaml
+COMPOSE_FILE_ORG4_BASE=compose-org4.yaml
+# use this as the docker compose couch file for org4
+COMPOSE_FILE_ORG4_COUCH=compose-couch-org4.yaml
+# certificate authorities compose file
+COMPOSE_FILE_ORG4_CA=compose-ca-org4.yaml
 # Get docker sock path from environment variable
 SOCK="${DOCKER_HOST:-/var/run/docker.sock}"
 DOCKER_SOCK="${SOCK##unix://}"

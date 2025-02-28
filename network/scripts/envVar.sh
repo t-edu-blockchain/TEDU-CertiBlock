@@ -21,6 +21,8 @@ export PEER0_UET_CA=${TEST_NETWORK_HOME}/organizations/peerOrganizations/uet/tls
 export PEER0_HUS_CA=${TEST_NETWORK_HOME}/organizations/peerOrganizations/hus/tlsca/tlsca.hus-cert.pem
 export PEER0_ORG3_CA=${TEST_NETWORK_HOME}/organizations/peerOrganizations/org3.example.com/tlsca/tlsca.org3.example.com-cert.pem
 
+export PEER0_ORG4_CA=${TEST_NETWORK_HOME}/organizations/peerOrganizations/org4.example.com/tlsca/tlsca.org4.example.com-cert.pem
+
 # Set environment variables for the peer org
 setGlobals() {
   local USING_ORG=""
@@ -45,12 +47,12 @@ setGlobals() {
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG3_CA
     export CORE_PEER_MSPCONFIGPATH=${TEST_NETWORK_HOME}/organizations/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp
     export CORE_PEER_ADDRESS=localhost:11051
-  elif [ "$USING_ORG" == "org4" ]; then
+  elif [ "$USING_ORG" == "4" ]; then
     export CORE_PEER_LOCALMSPID=Org4MSP
     export CORE_PEER_TLS_ROOTCERT_FILE=$PEER0_ORG4_CA
-    export CORE_PEER_MSPCONFIGPATH=${TEST_NETWORK_HOME}/organizations/peerOrganizations/org4/users/Admin@org4/msp
+    export CORE_PEER_MSPCONFIGPATH=${TEST_NETWORK_HOME}/organizations/peerOrganizations/org4.example.com/users/Admin@org4.example.com/msp
     export CORE_PEER_ADDRESS=localhost:13051
-  else
+  else 
     errorln "Org '${USING_ORG}' unknown"
   fi
 

@@ -30,8 +30,8 @@ createAnchorPeerUpdate() {
   elif [ "$ORG" == "3" ]; then
     HOST="peer0.org3.example.com"
     PORT=11051
-  elif [ "$ORG" == "org4" ]; then
-    HOST="peer0.org4"
+  elif [ "$ORG" == "4" ]; then
+    HOST="peer0.org4.example.com"
     PORT=13051
   else
     errorln "Org '${ORG}' unknown"
