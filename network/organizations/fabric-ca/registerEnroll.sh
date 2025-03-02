@@ -201,11 +201,11 @@ function createOrderer() {
 
   # Copy orderer org's CA cert to orderer org's /msp/tlscacerts directory (for use in the channel MSP definition)
   mkdir -p "${PWD}/organizations/ordererOrganizations/example/msp/tlscacerts"
-  cp "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem" "${PWD}/organizations/ordererOrganizations/example/msp/tlscacerts/tlsca-cert.pem"
+  cp "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem" "${PWD}/organizations/ordererOrganizations/example/msp/tlscacerts/tlsca.example-cert.pem"
 
   # Copy orderer org's CA cert to orderer org's /tlsca directory (for use by clients)
   mkdir -p "${PWD}/organizations/ordererOrganizations/example/tlsca"
-  cp "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem" "${PWD}/organizations/ordererOrganizations/example/tlsca/tlsca-cert.pem"
+  cp "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem" "${PWD}/organizations/ordererOrganizations/example/tlsca/tlsca.example-cert.pem"
 
   # Loop through each orderer (orderer, orderer2, orderer3, orderer4) to register and generate artifacts
   for ORDERER in orderer orderer2 orderer3 orderer4; do
@@ -236,7 +236,7 @@ function createOrderer() {
 
     # Copy orderer org's CA cert to orderer's /msp/tlscacerts directory (for use in the orderer MSP definition)
     mkdir -p "${PWD}/organizations/ordererOrganizations/example/orderers/${ORDERER}.example/msp/tlscacerts"
-    cp "${PWD}/organizations/ordererOrganizations/example/orderers/${ORDERER}.example/tls/tlscacerts/"* "${PWD}/organizations/ordererOrganizations/example/orderers/${ORDERER}.example/msp/tlscacerts/tlsca-cert.pem"
+    cp "${PWD}/organizations/ordererOrganizations/example/orderers/${ORDERER}.example/tls/tlscacerts/"* "${PWD}/organizations/ordererOrganizations/example/orderers/${ORDERER}.example/msp/tlscacerts/tlsca.example-cert.pem"
   done
 
   # Register and generate artifacts for the orderer admin

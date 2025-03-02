@@ -1,10 +1,10 @@
 version: '3.7'
 
 volumes:
-  orderer:
-  orderer2:
-  orderer3:
-  orderer4:
+  orderer.example:
+  orderer2.example:
+  orderer3.example:
+  orderer4.example:
   peer0.uet:
   peer0.hus:
 
@@ -14,8 +14,8 @@ networks:
 
 services:
 
-  orderer:
-    container_name: orderer
+  orderer.example:
+    container_name: orderer.example
     image: hyperledger/fabric-orderer:latest
     labels:
       service: hyperledger-fabric
@@ -41,14 +41,14 @@ services:
       - ORDERER_ADMIN_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
       - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
       - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:7053
-      - ORDERER_OPERATIONS_LISTENADDRESS=orderer:9443
+      - ORDERER_OPERATIONS_LISTENADDRESS=orderer.example:9443
       - ORDERER_METRICS_PROVIDER=prometheus
     working_dir: /root
     command: orderer
     volumes:
-      - ../organizations/ordererOrganizations/example/orderers/orderer..exampleexample/msp:/var/hyperledger/orderer/msp
-      - ../organizations/ordererOrganizations/example/orderers/orderer..exampleexample/tls:/var/hyperledger/orderer/tls
-      - orderer:/var/hyperledger/production/orderer
+      - ../organizations/ordererOrganizations/example/orderers/orderer.example/msp:/var/hyperledger/orderer/msp
+      - ../organizations/ordererOrganizations/example/orderers/orderer.example/tls/:/var/hyperledger/orderer/tls
+      - orderer.example:/var/hyperledger/production/orderer
     ports:
       - 7050:7050
       - 7053:7053
@@ -56,8 +56,8 @@ services:
     networks:
       - test
 
-  orderer2:
-    container_name: orderer2
+  orderer2.example:
+    container_name: orderer2.example
     image: hyperledger/fabric-orderer:latest
     labels:
       service: hyperledger-fabric
@@ -83,14 +83,14 @@ services:
       - ORDERER_ADMIN_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
       - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
       - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:7055
-      - ORDERER_OPERATIONS_LISTENADDRESS=orderer2:9446
+      - ORDERER_OPERATIONS_LISTENADDRESS=orderer2.example:9446
       - ORDERER_METRICS_PROVIDER=prometheus
     working_dir: /root
     command: orderer
     volumes:
       - ../organizations/ordererOrganizations/example/orderers/orderer2.example/msp:/var/hyperledger/orderer/msp
-      - ../organizations/ordererOrganizations/example/orderers/orderer2.example/tls:/var/hyperledger/orderer/tls
-      - orderer2:/var/hyperledger/production/orderer
+      - ../organizations/ordererOrganizations/example/orderers/orderer2.example/tls/:/var/hyperledger/orderer/tls
+      - orderer2.example:/var/hyperledger/production/orderer
     ports:
       - 7052:7052
       - 7055:7055
@@ -98,8 +98,8 @@ services:
     networks:
       - test
 
-  orderer3:
-    container_name: orderer3
+  orderer3.example:
+    container_name: orderer3.example
     image: hyperledger/fabric-orderer:latest
     labels:
       service: hyperledger-fabric
@@ -125,14 +125,14 @@ services:
       - ORDERER_ADMIN_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
       - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
       - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:7057
-      - ORDERER_OPERATIONS_LISTENADDRESS=orderer3:9447
+      - ORDERER_OPERATIONS_LISTENADDRESS=orderer3.example:9447
       - ORDERER_METRICS_PROVIDER=prometheus
     working_dir: /root
     command: orderer
     volumes:
       - ../organizations/ordererOrganizations/example/orderers/orderer3.example/msp:/var/hyperledger/orderer/msp
-      - ../organizations/ordererOrganizations/example/orderers/orderer3.example/tls:/var/hyperledger/orderer/tls
-      - orderer3:/var/hyperledger/production/orderer
+      - ../organizations/ordererOrganizations/example/orderers/orderer3.example/tls/:/var/hyperledger/orderer/tls
+      - orderer3.example:/var/hyperledger/production/orderer
     ports:
       - 7056:7056
       - 7057:7057
@@ -140,8 +140,8 @@ services:
     networks:
       - test
 
-  orderer4:
-    container_name: orderer4
+  orderer4.example:
+    container_name: orderer4.example
     image: hyperledger/fabric-orderer:latest
     labels:
       service: hyperledger-fabric
@@ -167,14 +167,14 @@ services:
       - ORDERER_ADMIN_TLS_ROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
       - ORDERER_ADMIN_TLS_CLIENTROOTCAS=[/var/hyperledger/orderer/tls/ca.crt]
       - ORDERER_ADMIN_LISTENADDRESS=0.0.0.0:7059
-      - ORDERER_OPERATIONS_LISTENADDRESS=orderer4:9448
+      - ORDERER_OPERATIONS_LISTENADDRESS=orderer4.example:9448
       - ORDERER_METRICS_PROVIDER=prometheus
     working_dir: /root
     command: orderer
     volumes:
       - ../organizations/ordererOrganizations/example/orderers/orderer4.example/msp:/var/hyperledger/orderer/msp
-      - ../organizations/ordererOrganizations/example/orderers/orderer4.example/tls:/var/hyperledger/orderer/tls
-      - orderer4:/var/hyperledger/production/orderer
+      - ../organizations/ordererOrganizations/example/orderers/orderer4.example/tls/:/var/hyperledger/orderer/tls
+      - orderer4.example:/var/hyperledger/production/orderer
     ports:
       - 7058:7058
       - 7059:7059
