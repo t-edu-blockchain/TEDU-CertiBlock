@@ -214,7 +214,7 @@ function createOrgs() {
 
     infoln "Creating Orderer Org Identities"
     #function_name cert-type   CN   
-    orderer_cert orderer orderer
+    orderer_cert orderer orderer.example
     orderer_cert admin Admin@example
 
   fi 
