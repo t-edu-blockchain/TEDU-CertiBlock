@@ -171,7 +171,6 @@ function createHUS() {
 
   cp "${PWD}/organizations/peerOrganizations/hus/msp/config.yaml" "${PWD}/organizations/peerOrganizations/hus/users/Admin@hus/msp/config.yaml"
 }
-
 function createOrderer() {
   infoln "Enrolling the CA admin"
   mkdir -p organizations/ordererOrganizations/example
@@ -207,7 +206,7 @@ function createOrderer() {
   mkdir -p "${PWD}/organizations/ordererOrganizations/example/tlsca"
   cp "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem" "${PWD}/organizations/ordererOrganizations/example/tlsca/tlsca.example-cert.pem"
 
-  # Loop through each orderer (orderer, orderer2, orderer3, orderer4) to register and generate artifacts
+# Loop through each orderer (orderer, orderer2, orderer3, orderer4) to register and generate artifacts
   for ORDERER in orderer orderer2 orderer3 orderer4; do
     infoln "Registering ${ORDERER}"
     set -x
@@ -221,12 +220,12 @@ function createOrderer() {
 
     cp "${PWD}/organizations/ordererOrganizations/example/msp/config.yaml" "${PWD}/organizations/ordererOrganizations/example/orderers/${ORDERER}.example/msp/config.yaml"
 
-    # Ensure the signcerts directory contains cert.pem (do not rename it)
-    # No need to move or rename, Fabric CA creates cert.pem by default
+    # Workaround: Rename the signcert file to ensure consistency with Cryptogen generated artifacts
+    mv "${PWD}/organizations/ordererOrganizations/example/orderers/${ORDERER}.example/msp/signcerts/cert.pem" "${PWD}/organizations/ordererOrganizations/example/orderers/${ORDERER}.example/msp/signcerts/${ORDERER}.example-cert.pem"
 
     infoln "Generating the ${ORDERER} TLS certificates, use --csr.hosts to specify Subject Alternative Names"
     set -x
-    fabric-ca-client enroll -u https://${ORDERER}:${ORDERER}pw@localhost:9054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/example/orderers/${ORDERER}.example/tls" --enrollment.profile tls --csr.hosts ${ORDERER} --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
+    fabric-ca-client enroll -u https://${ORDERER}:${ORDERER}pw@localhost:9054 --caname ca-orderer -M "${PWD}/organizations/ordererOrganizations/example/orderers/${ORDERER}.example/tls" --enrollment.profile tls --csr.hosts ${ORDERER}.example --csr.hosts localhost --tls.certfiles "${PWD}/organizations/fabric-ca/ordererOrg/ca-cert.pem"
     { set +x; } 2>/dev/null
 
     # Copy the tls CA cert, server cert, server keystore to well known file names in the orderer's tls directory that are referenced by orderer startup config

@@ -55,7 +55,7 @@ function peer_cert() {
 
 function orderer_cert() {
     TYPE=$1 #orderer user
-    USER=$2 #orderer
+    USER=$2 #orderer.example
 
     mkdir -p organizations/ordererOrganizations/example/ca
     mkdir -p organizations/ordererOrganizations/example/msp/cacerts
@@ -69,10 +69,10 @@ function orderer_cert() {
 
         cfssl gencert -initca "${PWD}/organizations/cfssl/ca-orderer.json" | cfssljson -bare "$CERT_DIR/ca/ca"
 
-        cp "$CERT_DIR/ca/ca.pem" "$CERT_DIR/tlsca/tlsca-cert.pem"
+        cp "$CERT_DIR/ca/ca.pem" "$CERT_DIR/tlsca/tlsca.example-cert.pem"
 
         cp "$CERT_DIR/ca/ca.pem" "$CERT_DIR/msp/cacerts/"
-        cp "$CERT_DIR/ca/ca.pem" "$CERT_DIR/msp/tlscacerts/tlsca-cert.pem"
+        cp "$CERT_DIR/ca/ca.pem" "$CERT_DIR/msp/tlscacerts/tlsca.example-cert.pem"
 
         echo 'NodeOUs:
     Enable: true
@@ -243,7 +243,7 @@ function generate_orderer_certs() {
     mv "$CERT_DIR/orderers/$USER/msp/signcerts/cert-key.pem" "$CERT_DIR/orderers/$USER/msp/keystore"
 
     cp "$CERT_DIR/ca/ca.pem" "$CERT_DIR/orderers/$USER/msp/cacerts"
-    cp "$CERT_DIR/ca/ca.pem" "$CERT_DIR/orderers/$USER/msp/tlscacerts/tlsca-cert.pem"
+    cp "$CERT_DIR/ca/ca.pem" "$CERT_DIR/orderers/$USER/msp/tlscacerts/tlsca.example-cert.pem"
 
     echo 'NodeOUs:
     Enable: true

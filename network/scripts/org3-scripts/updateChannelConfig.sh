@@ -50,7 +50,7 @@ signConfigtxAsPeerOrg UET ${TEST_NETWORK_HOME}/channel-artifacts/org3_update_in_
 infoln "Submitting transaction from a different peer (peer0.org2) which also signs it"
 setGlobals HUS
 set -x
-peer channel update -f ${TEST_NETWORK_HOME}/channel-artifacts/org3_update_in_envelope.pb -c ${CHANNEL_NAME} -o localhost:7050 --ordererTLSHostnameOverride orderer --tls --cafile "$ORDERER_CA"
+peer channel update -f ${TEST_NETWORK_HOME}/channel-artifacts/org3_update_in_envelope.pb -c ${CHANNEL_NAME} -o localhost:7050 --ordererTLSHostnameOverride orderer.example --tls --cafile "$ORDERER_CA"
 { set +x; } 2>/dev/null
 
 successln "Config transaction to add org3 to network submitted"
