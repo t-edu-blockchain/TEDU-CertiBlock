@@ -1,0 +1,7 @@
+{
+    "index":{
+        "fields":["studentPK", "universityPK"]
+    },
+    "name":"indexOwner",
+    "type":"json"
+  }

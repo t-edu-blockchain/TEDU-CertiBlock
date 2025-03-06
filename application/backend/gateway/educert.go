@@ -140,7 +140,7 @@ func InitLedger(contract *client.Contract) (string, error) {
 // IssueCertificate phát hành chứng chỉ mới
 func IssueCertificate(contract *client.Contract, certHash, universitySignature, studentSignature, dateOfIssuing, certUUID, universityPK, studentPK string) (string, error) {
 	result, err := contract.SubmitTransaction(
-		"issueCertificate",
+		"IssueCertificate",
 		certHash,
 		universitySignature,
 		studentSignature,
@@ -158,7 +158,7 @@ func IssueCertificate(contract *client.Contract, certHash, universitySignature, 
 // RegisterUniversity đăng ký một trường đại học
 func RegisterUniversity(contract *client.Contract, name, publicKey, location, description string) (string, error) {
 	result, err := contract.SubmitTransaction(
-		"registerUniversity",
+		"RegisterUniversity",
 		name,
 		publicKey,
 		location,
@@ -172,7 +172,7 @@ func RegisterUniversity(contract *client.Contract, name, publicKey, location, de
 
 // QueryCertificateByUUID truy vấn chứng chỉ theo UUID
 func QueryCertificateByUUID(contract *client.Contract, certUUID string) (string, error) {
-	result, err := contract.EvaluateTransaction("queryCertificateByUUID", certUUID)
+	result, err := contract.EvaluateTransaction("QueryCertificateByUUID", certUUID)
 	if err != nil {
 		return "", fmt.Errorf("failed to query certificate with UUID %s: %w", certUUID, err)
 	}
@@ -181,7 +181,7 @@ func QueryCertificateByUUID(contract *client.Contract, certUUID string) (string,
 
 // GetAllCertificatesByStudent lấy tất cả chứng chỉ của một sinh viên
 func GetAllCertificatesByStudent(contract *client.Contract, studentPK string) (string, error) {
-	result, err := contract.EvaluateTransaction("getAllCertificateByStudent", studentPK)
+	result, err := contract.EvaluateTransaction("GetAllCertificateByStudent", studentPK)
 	if err != nil {
 		return "", fmt.Errorf("failed to get certificates for student %s: %w", studentPK, err)
 	}
@@ -190,7 +190,7 @@ func GetAllCertificatesByStudent(contract *client.Contract, studentPK string) (s
 
 // GetAllCertificatesByUniversity lấy tất cả chứng chỉ của một trường đại học
 func GetAllCertificatesByUniversity(contract *client.Contract, universityPK string) (string, error) {
-	result, err := contract.EvaluateTransaction("getAllCertificateByUniversity", universityPK)
+	result, err := contract.EvaluateTransaction("GetAllCertificateByUniversity", universityPK)
 	if err != nil {
 		return "", fmt.Errorf("failed to get certificates for university %s: %w", universityPK, err)
 	}
@@ -199,7 +199,7 @@ func GetAllCertificatesByUniversity(contract *client.Contract, universityPK stri
 
 // QueryAllCertificates lấy tất cả chứng chỉ
 func QueryAllCertificates(contract *client.Contract) (string, error) {
-	result, err := contract.EvaluateTransaction("queryAll")
+	result, err := contract.EvaluateTransaction("QueryAll")
 	if err != nil {
 		return "", fmt.Errorf("failed to query all certificates: %w", err)
 	}

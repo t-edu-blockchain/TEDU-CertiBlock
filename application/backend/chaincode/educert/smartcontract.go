@@ -11,8 +11,6 @@ type SmartContract struct {
 	contractapi.Contract
 }
 
-
-// Asset describes basic details of what makes up a simple asset
 type Certificate struct {
 	CertHash            string `json:"certHash"`
 	UniversitySignature string `json:"universitySignature"`
@@ -94,7 +92,7 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 	return certificateSchema, err
 }
 
-func (s *SmartContract) issueCertificate(ctx contractapi.TransactionContextInterface, certHash string, universitySignature string, studentSignature string, dateOfIssuing string, certUUID string, universityPK string, studentPK string) (*Certificate, error) {
+func (s *SmartContract) IssueCertificate(ctx contractapi.TransactionContextInterface, certHash string, universitySignature string, studentSignature string, dateOfIssuing string, certUUID string, universityPK string, studentPK string) (*Certificate, error) {
 
 	fmt.Println("--------------issueCertificate called--------------")
 
@@ -113,7 +111,7 @@ func (s *SmartContract) issueCertificate(ctx contractapi.TransactionContextInter
 	return certificate, err
 }
 
-func (s *SmartContract) registerUniversity(ctx contractapi.TransactionContextInterface, name string, publicKey string, location string, description string) (*University, error) {
+func (s *SmartContract) RegisterUniversity(ctx contractapi.TransactionContextInterface, name string, publicKey string, location string, description string) (*University, error) {
 
 	fmt.Println("--------------registerUniversity called--------------")
 
@@ -134,7 +132,7 @@ func (s *SmartContract) registerUniversity(ctx contractapi.TransactionContextInt
 }
 
 
-func (s *SmartContract) queryUniversityProfileByName(ctx contractapi.TransactionContextInterface, name string) (*University, error) {
+func (s *SmartContract) QueryUniversityProfileByName(ctx contractapi.TransactionContextInterface, name string) (*University, error) {
 	
 	fmt.Println("--------------queryUniversityProfileByName called--------------")
 
@@ -156,7 +154,7 @@ func (s *SmartContract) queryUniversityProfileByName(ctx contractapi.Transaction
 }
 
 // UpdateAsset updates an existing asset in the world state with provided parameters.
-func (s *SmartContract) queryCertificateSchema(ctx contractapi.TransactionContextInterface, schemaVersion string) (*Schema, error) {
+func (s *SmartContract) QueryCertificateSchema(ctx contractapi.TransactionContextInterface, schemaVersion string) (*Schema, error) {
 	
 	fmt.Println("--------------queryCertificateSchema called--------------")
 
@@ -178,7 +176,7 @@ func (s *SmartContract) queryCertificateSchema(ctx contractapi.TransactionContex
 	
 }
 
-func (s *SmartContract) queryCertificateByUUID(ctx contractapi.TransactionContextInterface, UUID string) (*Certificate, error) {
+func (s *SmartContract) QueryCertificateByUUID(ctx contractapi.TransactionContextInterface, UUID string) (*Certificate, error) {
 	
 	fmt.Println("--------------queryCertificateByUUID called--------------")
 
@@ -199,7 +197,7 @@ func (s *SmartContract) queryCertificateByUUID(ctx contractapi.TransactionContex
 	return &certificate, nil
 }
 
-func constructQueryResponseFromIterator(resultsIterator shim.StateQueryIteratorInterface) ([]*Certificate, error) {
+func ConstructQueryResponseFromIterator(resultsIterator shim.StateQueryIteratorInterface) ([]*Certificate, error) {
 	var certificates []*Certificate
 	for resultsIterator.HasNext() {
 		queryResult, err := resultsIterator.Next()
@@ -218,7 +216,7 @@ func constructQueryResponseFromIterator(resultsIterator shim.StateQueryIteratorI
 }
 
 
-func queryWithQueryString(ctx contractapi.TransactionContextInterface, queryString string) ([]*Certificate, error) {
+func QueryWithQueryString(ctx contractapi.TransactionContextInterface, queryString string) ([]*Certificate, error) {
 	
 	fmt.Println("--------------queryWithQueryString called--------------")
 	fmt.Println("queryString: " + queryString)
@@ -229,38 +227,53 @@ func queryWithQueryString(ctx contractapi.TransactionContextInterface, queryStri
 	}
 	defer resultsIterator.Close()
 
-	return constructQueryResponseFromIterator(resultsIterator)
+	return ConstructQueryResponseFromIterator(resultsIterator)
 }
 
-func (s *SmartContract) getAllCertificateByStudent(ctx contractapi.TransactionContextInterface, studentPK string) ([]*Certificate, error) {
+func (s *SmartContract) GetAllCertificateByStudent(ctx contractapi.TransactionContextInterface, studentPK string) ([]*Certificate, error) {
 	
 	fmt.Println("--------------queryCertificateByUniversity called--------------")
 
 	queryString := fmt.Sprintf(`{"selector":{"dataType":"certificate","studentPK":"%s"}}`, studentPK)
 
-	queryResults, err := queryWithQueryString(ctx, queryString)
+	queryResults, err := QueryWithQueryString(ctx, queryString)
 
 	return queryResults, err
 }
 
-func (s *SmartContract) getAllCertificateByUniversity(ctx contractapi.TransactionContextInterface, universityPK string) ([]*Certificate, error) {
+func (s *SmartContract) GetAllCertificateByUniversity(ctx contractapi.TransactionContextInterface, universityPK string) ([]*Certificate, error) {
 	
 	fmt.Println("--------------queryCertificateByUniversity called--------------")
 
 	queryString := fmt.Sprintf(`{"selector":{"dataType":"certificate","universityPK":"%s"}}`, universityPK)
 
-	queryResults, err := queryWithQueryString(ctx, queryString)
+	queryResults, err := QueryWithQueryString(ctx, queryString)
 
 	return queryResults, err
 }
 
-func (s *SmartContract) queryAll(ctx contractapi.TransactionContextInterface) ([]*Certificate, error) {
+func (s *SmartContract) QueryAll(ctx contractapi.TransactionContextInterface) ([]*Certificate, error) {
 	
-	fmt.Println("--------------queryAll called--------------")
+	resultsIterator, err := ctx.GetStub().GetStateByRange("", "")
+	if err != nil {
+		return nil, err
+	}
+	defer resultsIterator.Close()
 
-	queryString := `{"selector":{"dataType":"certificate"}}`
+	var certificates []*Certificate
+	for resultsIterator.HasNext() {
+		queryResponse, err := resultsIterator.Next()
+		if err != nil {
+			return nil, err
+		}
 
-	queryResults, err := queryWithQueryString(ctx, queryString)
+		var cert Certificate
+		err = json.Unmarshal(queryResponse.Value, &cert)
+		if err != nil {
+			return nil, err
+		}
+		certificates = append(certificates, &cert)
+	}
 
-	return queryResults, err
+	return certificates, nil
 }
