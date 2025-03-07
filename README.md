@@ -7,3 +7,15 @@ Install bin and docker:
 ```sh
 ./install-fabric.sh docker binary
 ```
+
+Run: 
+```
+./network.sh up createChannel -ca -c mychannel -s couchdb
+./network.sh deployCC -ccn certicontract -ccp ../application/backend/chaincode -ccv 1 -ccl go
+
+cd application/nodeapp
+wails dev -tags webkit2_41
+
+
+cd application/backend/api 
+go run . ```
