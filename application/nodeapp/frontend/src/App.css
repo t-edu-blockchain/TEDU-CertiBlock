@@ -1,0 +1,85 @@
+#App {
+    text-align: center;
+    padding: 20px;
+}
+
+#logo {
+    width: 150px;
+    margin-bottom: 20px;
+}
+
+.result {
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    min-height: 100px;
+    white-space: pre-wrap;
+}
+
+.table-wrapper {
+    max-width: 100%;
+    overflow-x: auto; /* Thêm thanh cuộn ngang */
+    margin-top: 20px;
+}
+
+.certificate-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+.certificate-table th,
+.certificate-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+    max-width: 150px; /* Giới hạn chiều rộng cột */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: black;
+}
+
+.certificate-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+.certificate-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.certificate-table tr:hover {
+    background-color: #f0f0f0;
+}
+
+.button-group {
+    margin: 20px 0;
+}
+
+.input-box {
+    margin: 20px 0;
+}
+
+.input {
+    display: block;
+    width: 80%;
+    margin: 10px auto;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
