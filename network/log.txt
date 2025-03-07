@@ -1,0 +1,2 @@
+Committed chaincode definition for chaincode 'certicontract' on channel 'mychannel':
+Version: 1, Sequence: 1, Endorsement Plugin: escc, Validation Plugin: vscc, Approvals: [HUSMSP: true, UETMSP: true]

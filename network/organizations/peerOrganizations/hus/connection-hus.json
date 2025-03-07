@@ -1,0 +1,49 @@
+{
+    "name": "test-network-HUS",
+    "version": "1.0.0",
+    "client": {
+        "organization": "HUS",
+        "connection": {
+            "timeout": {
+                "peer": {
+                    "endorser": "300"
+                }
+            }
+        }
+    },
+    "organizations": {
+        "HUS": {
+            "mspid": "HUSMSP",
+            "peers": [
+                "peer0.HUS"
+            ],
+            "certificateAuthorities": [
+                "ca.HUS"
+            ]
+        }
+    },
+    "peers": {
+        "peer0.HUS": {
+            "url": "grpcs://localhost:9051",
+            "tlsCACerts": {
+                "pem": "-----BEGIN CERTIFICATE-----\nMIIB6jCCAZGgAwIBAgIUGbRMaRgJnqkuSyjUslS2HMDYjD0wCgYIKoZIzj0EAwIw\nUjELMAkGA1UEBhMCVUsxEjAQBgNVBAgTCUhhbXBzaGlyZTEQMA4GA1UEBxMHSHVy\nc2xleTEMMAoGA1UEChMDaHVzMQ8wDQYDVQQDEwZjYS5odXMwHhcNMjUwMzA3MTU1\nMjAwWhcNNDAwMzAzMTU1MjAwWjBSMQswCQYDVQQGEwJVSzESMBAGA1UECBMJSGFt\ncHNoaXJlMRAwDgYDVQQHEwdIdXJzbGV5MQwwCgYDVQQKEwNodXMxDzANBgNVBAMT\nBmNhLmh1czBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABBARSPDHU3VRWk3fXx2n\nr9zSYJbyyL+N88jiKt/GHXHrw4MV+ALUw1QumT691+/n5xqUu2kOcjFC23bnc7nf\nhRejRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEBMB0GA1Ud\nDgQWBBTUerTeYOY+2EY0jn/xtRxN8/EYXjAKBggqhkjOPQQDAgNHADBEAiAP9TjH\n3y+dh0scSaPRJrxf/GMIPOvXbrgHMY4ILUw6dwIgBkUT0JkB9AhENl0Xy1xCWgsu\n1ktu45hyhjYqADILsqg=\n-----END CERTIFICATE-----\n"
+            },
+            "grpcOptions": {
+                "ssl-target-name-override": "peer0.HUS",
+                "hostnameOverride": "peer0.HUS"
+            }
+        }
+    },
+    "certificateAuthorities": {
+        "ca.HUS": {
+            "url": "https://localhost:8054",
+            "caName": "ca-HUS",
+            "tlsCACerts": {
+                "pem": ["-----BEGIN CERTIFICATE-----\nMIIB6jCCAZGgAwIBAgIUGbRMaRgJnqkuSyjUslS2HMDYjD0wCgYIKoZIzj0EAwIw\nUjELMAkGA1UEBhMCVUsxEjAQBgNVBAgTCUhhbXBzaGlyZTEQMA4GA1UEBxMHSHVy\nc2xleTEMMAoGA1UEChMDaHVzMQ8wDQYDVQQDEwZjYS5odXMwHhcNMjUwMzA3MTU1\nMjAwWhcNNDAwMzAzMTU1MjAwWjBSMQswCQYDVQQGEwJVSzESMBAGA1UECBMJSGFt\ncHNoaXJlMRAwDgYDVQQHEwdIdXJzbGV5MQwwCgYDVQQKEwNodXMxDzANBgNVBAMT\nBmNhLmh1czBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABBARSPDHU3VRWk3fXx2n\nr9zSYJbyyL+N88jiKt/GHXHrw4MV+ALUw1QumT691+/n5xqUu2kOcjFC23bnc7nf\nhRejRTBDMA4GA1UdDwEB/wQEAwIBBjASBgNVHRMBAf8ECDAGAQH/AgEBMB0GA1Ud\nDgQWBBTUerTeYOY+2EY0jn/xtRxN8/EYXjAKBggqhkjOPQQDAgNHADBEAiAP9TjH\n3y+dh0scSaPRJrxf/GMIPOvXbrgHMY4ILUw6dwIgBkUT0JkB9AhENl0Xy1xCWgsu\n1ktu45hyhjYqADILsqg=\n-----END CERTIFICATE-----\n"]
+            },
+            "httpOptions": {
+                "verify": false
+            }
+        }
+    }
+}

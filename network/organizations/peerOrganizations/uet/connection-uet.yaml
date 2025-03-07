@@ -1,0 +1,61 @@
+---
+name: test-network-UET
+version: 1.0.0
+client:
+  organization: UET
+  connection:
+    timeout:
+      peer:
+        endorser: '300'
+organizations:
+  UET:
+    mspid: UETMSP
+    peers:
+    - peer0.UET
+    certificateAuthorities:
+    - ca.UET
+peers:
+  peer0.UET:
+    url: grpcs://localhost:7051
+    tlsCACerts:
+      pem: |
+          -----BEGIN CERTIFICATE-----
+          MIIB8zCCAZmgAwIBAgIUS/KxTSE9Bgsc7/lCW7nJXphThHwwCgYIKoZIzj0EAwIw
+          VjELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMQ8wDQYDVQQH
+          EwZEdXJoYW0xDDAKBgNVBAoTA3VldDEPMA0GA1UEAxMGY2EudWV0MB4XDTI1MDMw
+          NzE1NTIwMFoXDTQwMDMwMzE1NTIwMFowVjELMAkGA1UEBhMCVVMxFzAVBgNVBAgT
+          Dk5vcnRoIENhcm9saW5hMQ8wDQYDVQQHEwZEdXJoYW0xDDAKBgNVBAoTA3VldDEP
+          MA0GA1UEAxMGY2EudWV0MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEYXrE7P4T
+          Z0Krxme0zAayH4XXw8BKZSZjZuYhDzgXtML9yjGK1DhEsIgBTy8aMb/pxzCLjqBh
+          hDN1p7om7UaKzKNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8C
+          AQEwHQYDVR0OBBYEFI6FyGaxogqyxdVbDsAxwZZPgISTMAoGCCqGSM49BAMCA0gA
+          MEUCIQCLVYP3lVcop5hhgxZdDUwHxJ0iYcYBT2Hx5Zw7qv9fewIgUEtMf7h1zqKr
+          waTwIGngfmrl88jEkJGhh8a1/GZQ2jw=
+          -----END CERTIFICATE-----
+          
+    grpcOptions:
+      ssl-target-name-override: peer0.UET
+      hostnameOverride: peer0.UET
+certificateAuthorities:
+  ca.UET:
+    url: https://localhost:7054
+    caName: ca-UET
+    tlsCACerts:
+      pem: 
+        - |
+          -----BEGIN CERTIFICATE-----
+          MIIB8zCCAZmgAwIBAgIUS/KxTSE9Bgsc7/lCW7nJXphThHwwCgYIKoZIzj0EAwIw
+          VjELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMQ8wDQYDVQQH
+          EwZEdXJoYW0xDDAKBgNVBAoTA3VldDEPMA0GA1UEAxMGY2EudWV0MB4XDTI1MDMw
+          NzE1NTIwMFoXDTQwMDMwMzE1NTIwMFowVjELMAkGA1UEBhMCVVMxFzAVBgNVBAgT
+          Dk5vcnRoIENhcm9saW5hMQ8wDQYDVQQHEwZEdXJoYW0xDDAKBgNVBAoTA3VldDEP
+          MA0GA1UEAxMGY2EudWV0MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEYXrE7P4T
+          Z0Krxme0zAayH4XXw8BKZSZjZuYhDzgXtML9yjGK1DhEsIgBTy8aMb/pxzCLjqBh
+          hDN1p7om7UaKzKNFMEMwDgYDVR0PAQH/BAQDAgEGMBIGA1UdEwEB/wQIMAYBAf8C
+          AQEwHQYDVR0OBBYEFI6FyGaxogqyxdVbDsAxwZZPgISTMAoGCCqGSM49BAMCA0gA
+          MEUCIQCLVYP3lVcop5hhgxZdDUwHxJ0iYcYBT2Hx5Zw7qv9fewIgUEtMf7h1zqKr
+          waTwIGngfmrl88jEkJGhh8a1/GZQ2jw=
+          -----END CERTIFICATE-----
+          
+    httpOptions:
+      verify: false
