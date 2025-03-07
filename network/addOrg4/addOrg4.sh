@@ -57,7 +57,7 @@ function printHelp () {
 
 # We use the cryptogen tool to generate the cryptographic material
 # (x509 certs) for the new org.  After we run the tool, the certs will
-# be put in the organizations folder with org1 and org2
+# be put in the organizations folder with uet and hus
 
 # Create Organziation crypto material using cryptogen or CAs
 function generateOrg4() {

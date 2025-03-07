@@ -170,19 +170,13 @@ func RegisterUniversity(contract *client.Contract, name, publicKey, location, de
 	}
 	return formatJSON(result), nil
 }
-// func QueryAllCertificates(contract *client.Contract) (string, error) {
-// 	result, err := contract.EvaluateTransaction("QueryAll")
-// 	if err != nil {
-// 		return "", fmt.Errorf("failed to query all certificates: %w", err)
-// 	}
-// 	return formatJSON(result), nil
-// }
+
 func QueryAllCertificates(ctx context.Context, contract *client.Contract) string {
     log.Println("Bắt đầu truy vấn QueryAll")
 	result, err := contract.EvaluateWithContext(ctx, "QueryAll")
     if err != nil {
         log.Printf("Lỗi truy vấn: %v", err)
-        return "Looix"
+        return "Lỗi"
     }
     log.Println("Truy vấn thành công")
     return formatJSON(result)

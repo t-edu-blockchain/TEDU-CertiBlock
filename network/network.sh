@@ -318,7 +318,7 @@ function networkUp() {
   fi
 }
 
-# call the script to create the channel, join the peers of org1 and org2,
+# call the script to create the channel, join the peers of uet and hus,
 # and then update the anchor peers for each organization
 function createChannel() {
   # Bring up the network if it is not already up.

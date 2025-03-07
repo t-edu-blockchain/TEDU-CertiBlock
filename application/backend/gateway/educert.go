@@ -138,37 +138,37 @@ func InitLedger(contract *client.Contract) (string, error) {
 }
 
 // IssueCertificate phát hành chứng chỉ mới
-func IssueCertificate(contract *client.Contract, certHash, universitySignature, studentSignature, dateOfIssuing, certUUID, universityPK, studentPK string) (string, error) {
-	result, err := contract.SubmitTransaction(
-		"IssueCertificate",
-		certHash,
-		universitySignature,
-		studentSignature,
-		dateOfIssuing,
-		certUUID,
-		universityPK,
-		studentPK,
-	)
-	if err != nil {
-		return "", fmt.Errorf("failed to issue certificate: %w", err)
-	}
-	return formatJSON(result), nil
-}
+// func IssueCertificate(contract *client.Contract, certHash, universitySignature, studentSignature, dateOfIssuing, certUUID, universityPK, studentPK string) (string, error) {
+// 	result, err := contract.SubmitTransaction(
+// 		"IssueCertificate",
+// 		certHash,
+// 		universitySignature,
+// 		studentSignature,
+// 		dateOfIssuing,
+// 		certUUID,
+// 		universityPK,
+// 		studentPK,
+// 	)
+// 	if err != nil {
+// 		return "", fmt.Errorf("failed to issue certificate: %w", err)
+// 	}
+// 	return formatJSON(result), nil
+// }
 
 // RegisterUniversity đăng ký một trường đại học
-func RegisterUniversity(contract *client.Contract, name, publicKey, location, description string) (string, error) {
-	result, err := contract.SubmitTransaction(
-		"RegisterUniversity",
-		name,
-		publicKey,
-		location,
-		description,
-	)
-	if err != nil {
-		return "", fmt.Errorf("failed to register university: %w", err)
-	}
-	return formatJSON(result), nil
-}
+// func RegisterUniversity(contract *client.Contract, name, publicKey, location, description string) (string, error) {
+// 	result, err := contract.SubmitTransaction(
+// 		"RegisterUniversity",
+// 		name,
+// 		publicKey,
+// 		location,
+// 		description,
+// 	)
+// 	if err != nil {
+// 		return "", fmt.Errorf("failed to register university: %w", err)
+// 	}
+// 	return formatJSON(result), nil
+// }
 
 // QueryCertificateByUUID truy vấn chứng chỉ theo UUID
 func QueryCertificateByUUID(contract *client.Contract, certUUID string) (string, error) {

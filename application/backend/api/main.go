@@ -3,8 +3,6 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"time"
-
 	"backend/gateway"
 	"github.com/gin-gonic/gin"
 	"github.com/hyperledger/fabric-gateway/pkg/client"
@@ -20,8 +18,6 @@ func main() {
 	}
 	defer gw.Close()
 	defer conn.Close()
-
-	// Kết nối tới channel và chaincode
 	network := gw.GetNetwork("mychannel")
 	contract = network.GetContract("certicontract") 
 
@@ -39,10 +35,10 @@ func main() {
 	// Các endpoint
 	router.GET("/certificates", getAllCertificates)
 	router.GET("/certificates/:uuid", getCertificateByUUID)
-	router.POST("/certificates", issueCertificate)
+	// router.POST("/certificates", issueCertificate)
 	router.GET("/certificates/student/:studentPK", getCertificatesByStudent)
 	router.GET("/certificates/university/:universityPK", getCertificatesByUniversity)
-	router.POST("/universities", registerUniversity)
+	// router.POST("/universities", registerUniversity)
 
 	// Khởi chạy server
 	err = router.Run(":8080")
@@ -90,34 +86,34 @@ func getCertificateByUUID(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func issueCertificate(c *gin.Context) {
-	var input CertificateInput
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
-		return
-	}
+// func issueCertificate(c *gin.Context) {
+// 	var input CertificateInput
+// 	if err := c.ShouldBindJSON(&input); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+// 		return
+// 	}
 
-	// Tạo UUID tự động nếu không cung cấp
-	if input.CertUUID == "" {
-		input.CertUUID = fmt.Sprintf("cert-%d", time.Now().UnixNano())
-	}
+// 	// Tạo UUID tự động nếu không cung cấp
+// 	if input.CertUUID == "" {
+// 		input.CertUUID = fmt.Sprintf("cert-%d", time.Now().UnixNano())
+// 	}
 
-	result, err := educert.IssueCertificate(
-		contract,
-		input.CertHash,
-		input.UniversitySig,
-		input.StudentSig,
-		input.DateOfIssuing,
-		input.CertUUID,
-		input.UniversityPK,
-		input.StudentPK,
-	)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "Certificate issued", "certUUID": input.CertUUID, "data": result})
-}
+// 	result, err := educert.IssueCertificate(
+// 		contract,
+// 		input.CertHash,
+// 		input.UniversitySig,
+// 		input.StudentSig,
+// 		input.DateOfIssuing,
+// 		input.CertUUID,
+// 		input.UniversityPK,
+// 		input.StudentPK,
+// 	)
+// 	if err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, gin.H{"message": "Certificate issued", "certUUID": input.CertUUID, "data": result})
+// }
 
 func getCertificatesByStudent(c *gin.Context) {
 	studentPK := c.Param("studentPK")
@@ -139,23 +135,25 @@ func getCertificatesByUniversity(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": result})
 }
 
-func registerUniversity(c *gin.Context) {
-	var input UniversityInput
-	if err := c.ShouldBindJSON(&input); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
-		return
-	}
 
-	result, err := educert.RegisterUniversity(
-		contract,
-		input.Name,
-		input.PublicKey,
-		input.Location,
-		input.Description,
-	)
-	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "University registered", "name": input.Name, "data": result})
-}
+//Chuyển qua nodeapp
+// func registerUniversity(c *gin.Context) {
+// 	var input UniversityInput
+// 	if err := c.ShouldBindJSON(&input); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+// 		return
+// 	}
+
+// 	result, err := educert.RegisterUniversity(
+// 		contract,
+// 		input.Name,
+// 		input.PublicKey,
+// 		input.Location,
+// 		input.Description,
+// 	)
+// 	if err != nil {
+// 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+// 		return
+// 	}
+// 	c.JSON(http.StatusOK, gin.H{"message": "University registered", "name": input.Name, "data": result})
+// }

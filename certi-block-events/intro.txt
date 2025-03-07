@@ -1,3 +1,0 @@
-- Emitting chaincode events from smart contract transaction functions.
-- Receiving chaincode events in a client application.
-- Replaying previous chaincode events in a client application.
