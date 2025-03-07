@@ -26,12 +26,12 @@ func main() {
 	contract = network.GetContract("certicontract") 
 
 	// Khởi tạo ledger
-	result, err := educert.InitLedger(contract)
-	if err != nil {
-		fmt.Printf("Failed to initialize ledger: %v\n", err)
-		return
-	}
-	fmt.Println("Ledger initialized:", result)
+	// result, err := educert.InitLedger(contract)
+	// if err != nil {
+	// 	fmt.Printf("Failed to initialize ledger: %v\n", err)
+	// 	return
+	// }
+	// fmt.Println("Ledger initialized:", result)
 
 	// Khởi tạo REST API
 	router := gin.Default()
