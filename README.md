@@ -1,3 +1,5 @@
+Install wsl2 - (Windows)
+
 Install Fabric
 Get the install script:
 ```sh
