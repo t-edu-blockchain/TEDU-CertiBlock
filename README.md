@@ -16,6 +16,7 @@ Install Wails: https://wails.io/docs/gettingstarted/installation
 Run: 
 Khởi động wsl trên máy:
 ```
+cd CertiBlock/network
 ./network.sh up createChannel -ca -c mychannel -s couchdb
 ./network.sh deployCC -ccn certicontract -ccp ../application/backend/chaincode -ccv 1 -ccl go
 
