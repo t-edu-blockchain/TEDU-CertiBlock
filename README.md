@@ -2,8 +2,7 @@ Install wsl2 - (Windows)
 
 Install Wails: https://wails.io/docs/gettingstarted/installation
 
-Run: 
-Khởi động wsl trên máy:
+Khởi động wsl trên máy
 
 Install Go for Linux:
 ```
@@ -21,7 +20,7 @@ Install bin and docker:
 ```sh
 ./install-fabric.sh docker binary
 ```
-
+Run
 ```
 cd CertiBlock/network
 ./network.sh up createChannel -ca -c mychannel -s couchdb
