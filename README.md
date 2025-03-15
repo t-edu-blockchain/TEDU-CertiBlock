@@ -51,6 +51,15 @@ cd network
 ./network.sh deployCC -ccn certicontract -ccp ../application/backend/chaincode -ccv 1 -ccl go
 ```
 
+In case one of the above commands fails, you might want to try
+**deleting all Docker containers, volumes and networks.** (this
+is dangerous so proceed with caution.) Still in that `network`
+directory, run:
+
+```sh
+./delete-all-docker-containers-volumes-and-networks.sh
+```
+
 ### Run Applications
 
 #### The Native App for Issuing Certificates
