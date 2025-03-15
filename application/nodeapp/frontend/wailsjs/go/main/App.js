@@ -18,8 +18,8 @@ export function InitLedger() {
   return window['go']['main']['App']['InitLedger']();
 }
 
-export function IssueCertificate(arg1, arg2, arg3, arg4, arg5, arg6, arg7) {
-  return window['go']['main']['App']['IssueCertificate'](arg1, arg2, arg3, arg4, arg5, arg6, arg7);
+export function IssueCertificate(arg1, arg2, arg3, arg4, arg5, arg6) {
+  return window['go']['main']['App']['IssueCertificate'](arg1, arg2, arg3, arg4, arg5, arg6);
 }
 
 export function RegisterUniversity(arg1, arg2, arg3, arg4) {

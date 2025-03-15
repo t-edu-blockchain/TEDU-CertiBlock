@@ -5,7 +5,7 @@
 		"groups": {
 			"Application": {
 				"groups": {
-					"Org3MSP": {
+					"HUSMSP": {
 						"groups": {},
 						"mod_policy": "",
 						"policies": {
@@ -43,7 +43,7 @@
 				"mod_policy": "",
 				"policies": {},
 				"values": {},
-				"version": "1"
+				"version": "0"
 			}
 		},
 		"mod_policy": "",
@@ -55,7 +55,7 @@
 		"groups": {
 			"Application": {
 				"groups": {
-					"Org3MSP": {
+					"HUSMSP": {
 						"groups": {},
 						"mod_policy": "Admins",
 						"policies": {
@@ -86,8 +86,8 @@
 								"value": {
 									"anchor_peers": [
 										{
-											"host": "peer0.org3.example.com",
-											"port": 11051
+											"host": "peer0.hus",
+											"port": 9051
 										}
 									]
 								},
@@ -105,7 +105,7 @@
 				"mod_policy": "",
 				"policies": {},
 				"values": {},
-				"version": "1"
+				"version": "0"
 			}
 		},
 		"mod_policy": "",

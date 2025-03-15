@@ -1,18 +1,17 @@
 import { useState } from 'react';
 import logo from './assets/images/logo-universal.png';
 import './App.css';
-import { Connect, InitLedger, IssueCertificate, RegisterUniversity, GetAll } from '../wailsjs/go/main/App';
+import { Connect, InitLedger, IssueCertificate, GetAll } from '../wailsjs/go/main/App';
 
 function App() {
     const [resultText, setResultText] = useState("Click a button to interact with the blockchain 👇");
     const [certInputs, setCertInputs] = useState({
         certHash: '',
-        universitySignature: '',
-        studentSignature: '',
         dateOfIssuing: '',
         certUUID: '',
         universityPK: '',
         studentPK: '',
+        backendServerUrl: '',
     });
     // const [univInputs, setUnivInputs] = useState({
     //     name: '',
@@ -59,13 +58,12 @@ function App() {
     const handleIssueCertificate = (e) => {
         e.preventDefault();
         IssueCertificate(
-            certInputs.certHash,
-            certInputs.universitySignature,
-            certInputs.studentSignature,
+            "",
+            "",
             certInputs.dateOfIssuing,
-            certInputs.certUUID,
             certInputs.universityPK,
-            certInputs.studentPK
+            certInputs.studentPK,
+            certInputs.backendServerUrl,
         )
             .then((result) => {
                 setResultText(result);
@@ -125,8 +123,6 @@ function App() {
                             <thead>
                                 <tr>
                                     <th>Cert Hash</th>
-                                    <th>University Sig</th>
-                                    <th>Student Sig</th>
                                     <th>Date Issued</th>
                                     <th>Cert UUID</th>
                                     <th>University PK</th>
@@ -138,8 +134,6 @@ function App() {
                                 {certificates.map((cert, index) => (
                                     <tr key={index}>
                                         <td title={cert.certHash}>{truncateText(cert.certHash, 10)}</td>
-                                        <td title={cert.universitySignature}>{truncateText(cert.universitySignature, 10)}</td>
-                                        <td title={cert.studentSignature}>{truncateText(cert.studentSignature, 10)}</td>
                                         <td title={cert.dateOfIssuing}>{truncateText(cert.dateOfIssuing, 10)}</td>
                                         <td title={cert.certUUID}>{truncateText(cert.certUUID, 10)}</td>
                                         <td title={cert.universityPK}>{truncateText(cert.universityPK, 10)}</td>
@@ -162,13 +156,10 @@ function App() {
             <div className="input-box">
                 <h3>Issue Certificate</h3>
                 <form onSubmit={handleIssueCertificate}>
-                    <input className="input" name="certHash" placeholder="Certificate Hash" value={certInputs.certHash} onChange={updateCertInput} />
-                    <input className="input" name="universitySignature" placeholder="University Signature" value={certInputs.universitySignature} onChange={updateCertInput} />
-                    <input className="input" name="studentSignature" placeholder="Student Signature" value={certInputs.studentSignature} onChange={updateCertInput} />
                     <input className="input" name="dateOfIssuing" placeholder="Date (e.g., 2025-03-07)" value={certInputs.dateOfIssuing} onChange={updateCertInput} />
-                    <input className="input" name="certUUID" placeholder="Certificate UUID" value={certInputs.certUUID} onChange={updateCertInput} />
-                    <input className="input" name="universityPK" placeholder="University Public Key" value={certInputs.universityPK} onChange={updateCertInput} />
+                    <input className="input" name="universityPK" placeholder="University Private Key" value={certInputs.universityPK} onChange={updateCertInput} />
                     <input className="input" name="studentPK" placeholder="Student Public Key" value={certInputs.studentPK} onChange={updateCertInput} />
+                    <input className="input" name="backendServerUrl" placeholder="Data Server URL" value={certInputs.backendServerUrl} onChange={updateCertInput} />
                     <button type="submit" className="btn">Issue</button>
                 </form>
             </div>

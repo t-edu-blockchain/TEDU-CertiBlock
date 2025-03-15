@@ -38,7 +38,7 @@
 // 		panic(fmt.Errorf("failed to initialize gateway: %w", err))
 // 	}
 // 	network := a.gw.GetNetwork("mychannel")
-// 	a.contract = network.GetContract("certicontract") 
+// 	a.contract = network.GetContract("certicontract")
 // }
 
 // func (a *App) InitLedger(){
@@ -59,9 +59,20 @@
 package main
 
 import (
+	"CertiBlock/application/shared/utils"
+	"bytes"
 	"context"
+	"encoding/base64"
+	"encoding/json"
 	"fmt"
+	"io"
+	"net/http"
+	"os"
 
+	"github.com/wailsapp/wails/v2/pkg/runtime"
+
+	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/hyperledger/fabric-gateway/pkg/client"
 	"google.golang.org/grpc"
 )
@@ -123,12 +134,119 @@ func (a *App) InitLedger() string {
 }
 
 // IssueCertificate issues a new certificate
-func (a *App) IssueCertificate(certHash, universitySignature, studentSignature, dateOfIssuing, certUUID, universityPK, studentPK string) string {
-	result, err := IssueCertificate(a.contract, certHash, universitySignature, studentSignature, dateOfIssuing, certUUID, universityPK, studentPK)
+func (a *App) IssueCertificate(universitySignature, studentSignature, dateOfIssuing, universityPrivateKeyString, studentPublicKeyString, backendServerUrl string) string {
+	ctx := a.ctx
+	options := runtime.OpenDialogOptions{
+		Title: "Select a file",
+	}
+
+	filePath, err := runtime.OpenFileDialog(ctx, options)
+	if err != nil {
+		return fmt.Sprintf("Error selecting file: %s", err)
+	}
+	if filePath == "" {
+		return "no file selected!"
+	}
+
+	// Read fileHandle content
+	fileHandle, err := os.Open(filePath)
+	if err != nil {
+		return fmt.Sprintf("Error: Failed to open file: %v", err)
+	}
+	defer fileHandle.Close()
+
+	// Read into byte slice
+	data, err := io.ReadAll(fileHandle)
+	if err != nil {
+		return fmt.Sprintf("Error: Failed to read file: %v", err)
+	}
+
+	// Base64 encode the content
+	file := base64.StdEncoding.EncodeToString(data)
+
+	////////////////////////////////
+	//////// END FILE STUFF ////////
+	////////////////////////////////
+
+	certUUID := uuid.NewString()
+
+	universityPublicKeyString, err := utils.ComputePublicKeyString(universityPrivateKeyString)
+	if err != nil {
+		return fmt.Sprintf("Error: Failed to compute university public key: %v", err)
+	}
+	fmt.Println("EEEEEEE2")
+
+	certHash := utils.HashSHA512(file + dateOfIssuing + certUUID + studentPublicKeyString + universityPublicKeyString)
+
+	if a.contract == nil {
+		return "Please connect and init ledger first!"
+	}
+
+	result, err := IssueCertificate(a.contract, certHash, universitySignature, studentSignature, dateOfIssuing, certUUID, universityPublicKeyString, studentPublicKeyString)
 	if err != nil {
 		return fmt.Sprintf("Error: Failed to issue certificate: %v", err)
 	}
-	return fmt.Sprintf("Certificate issued successfully:\n%s", result)
+	fmt.Println("EEEEEEE3")
+
+	ks := utils.GenerateSecureRandomString(64)
+	studentEncryptedKS1, studentEncryptedKS2, err := utils.ElGamalEncryptString(studentPublicKeyString, ks)
+	if err != nil {
+		return fmt.Sprintf("Error: Failed to encrypt KS using student pubkey: %v", err)
+	}
+	fmt.Println("EEEEEEE4")
+
+	universityEncryptedKS1, universityEncryptedKS2, err := utils.ElGamalEncryptString(universityPublicKeyString, ks)
+	if err != nil {
+		return "Error: Failed to encrypt KS using university pubkey"
+	}
+
+	fmt.Println("EEEEEEE5")
+	ksEncryptedFile, err := utils.VigenereEncryptString(ks, file)
+	if err != nil {
+		return "Error: Failed to encrypt file using KS"
+	}
+
+	fmt.Println("EEEEEEE6")
+	// Save the file to the backend
+	payload := gin.H{
+		"certUUID":               certUUID,
+		"ksEncryptedFile":        ksEncryptedFile,
+		"studentEncryptedKS1":    studentEncryptedKS1,
+		"studentEncryptedKS2":    studentEncryptedKS2,
+		"universityEncryptedKS1": universityEncryptedKS1,
+		"universityEncryptedKS2": universityEncryptedKS2,
+		"universityPrivateKey":   universityPrivateKeyString,
+	}
+
+	jsonPayload, err := json.Marshal(payload)
+	fmt.Println("EEEEEEE7")
+	if err != nil {
+		return fmt.Sprintf("Error: Failed to marshal payload: %v", err)
+	}
+
+	fmt.Println("HERE")
+	res, err := http.Post(backendServerUrl+"/api/universities/certificate-file", "application/json", bytes.NewBuffer(jsonPayload))
+	if err != nil {
+		return fmt.Sprintf("Error: Failed to save file to backend: %v", err)
+	}
+	defer res.Body.Close()
+
+	fmt.Println("HERE2")
+
+	body, err := io.ReadAll(res.Body)
+	if err != nil {
+		return fmt.Sprintf("Error: Failed to read response body: %v", err)
+	}
+
+	fmt.Println("HERE3")
+
+	if res.StatusCode != http.StatusOK && res.StatusCode != http.StatusCreated {
+		return fmt.Sprintf("Error: Failed to save file to backend: %s", string(body))
+	}
+
+	fmt.Println("HERE4")
+
+	return fmt.Sprintf("Certificate issued successfully:\n%s\n\nUniversity Public Key:%s\n", result, universityPublicKeyString)
 }
 
 // RegisterUniversity registers a new university

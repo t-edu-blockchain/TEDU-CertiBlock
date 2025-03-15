@@ -5,7 +5,8 @@ import (
 	"net/http"
 	"time"
 
-	"backend/gateway"
+	educert "CertiBlock/application/backend/gateway"
+
 	"github.com/gin-gonic/gin"
 	"github.com/hyperledger/fabric-gateway/pkg/client"
 )
@@ -23,7 +24,7 @@ func main() {
 
 	// Kết nối tới channel và chaincode
 	network := gw.GetNetwork("mychannel")
-	contract = network.GetContract("certicontract") 
+	contract = network.GetContract("certicontract")
 
 	// Khởi tạo ledger
 	// result, err := educert.InitLedger(contract)
@@ -53,13 +54,13 @@ func main() {
 
 // Struct để nhận dữ liệu từ request POST cho chứng chỉ
 type CertificateInput struct {
-	CertHash          string `json:"certHash"`
-	UniversitySig     string `json:"universitySignature"`
-	StudentSig        string `json:"studentSignature"`
-	DateOfIssuing     string `json:"dateOfIssuing"`
-	CertUUID          string `json:"certUUID"`
-	UniversityPK      string `json:"universityPK"`
-	StudentPK         string `json:"studentPK"`
+	CertHash      string `json:"certHash"`
+	UniversitySig string `json:"universitySignature"`
+	StudentSig    string `json:"studentSignature"`
+	DateOfIssuing string `json:"dateOfIssuing"`
+	CertUUID      string `json:"certUUID"`
+	UniversityPK  string `json:"universityPK"`
+	StudentPK     string `json:"studentPK"`
 }
 
 // Struct để nhận dữ liệu từ request POST cho trường đại học
