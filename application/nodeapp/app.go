@@ -148,21 +148,14 @@ func (a *App) IssueCertificate(universitySignature, studentSignature, dateOfIssu
 		return "no file selected!"
 	}
 
-	// Read fileHandle content
-	fileHandle, err := os.Open(filePath)
-	if err != nil {
-		return fmt.Sprintf("Error: Failed to open file: %v", err)
-	}
-	defer fileHandle.Close()
-
 	// Read into byte slice
-	data, err := io.ReadAll(fileHandle)
+	fileRawBytes, err := os.ReadFile(filePath)
 	if err != nil {
 		return fmt.Sprintf("Error: Failed to read file: %v", err)
 	}
 
 	// Base64 encode the content
-	file := base64.StdEncoding.EncodeToString(data)
+	base64File := base64.StdEncoding.EncodeToString(fileRawBytes)
 
 	////////////////////////////////
 	//////// END FILE STUFF ////////
@@ -176,17 +169,11 @@ func (a *App) IssueCertificate(universitySignature, studentSignature, dateOfIssu
 	}
 	fmt.Println("EEEEEEE2")
 
-	certHash := utils.HashSHA512(file + dateOfIssuing + certUUID + studentPublicKeyString + universityPublicKeyString)
+	certHash := utils.HashSHA512(base64File + dateOfIssuing + certUUID + studentPublicKeyString + universityPublicKeyString)
 
 	if a.contract == nil {
 		return "Please connect and init ledger first!"
 	}
-
-	result, err := IssueCertificate(a.contract, certHash, universitySignature, studentSignature, dateOfIssuing, certUUID, universityPublicKeyString, studentPublicKeyString)
-	if err != nil {
-		return fmt.Sprintf("Error: Failed to issue certificate: %v", err)
-	}
-	fmt.Println("EEEEEEE3")
 
 	ks := utils.GenerateSecureRandomString(64)
 	studentEncryptedKS1, studentEncryptedKS2, err := utils.ElGamalEncryptString(studentPublicKeyString, ks)
@@ -201,9 +188,15 @@ func (a *App) IssueCertificate(universitySignature, studentSignature, dateOfIssu
 	}
 
 	fmt.Println("EEEEEEE5")
-	ksEncryptedFile, err := utils.VigenereEncryptString(ks, file)
+	ksEncryptedFile, err := utils.VigenereEncryptString(ks, base64File)
 	if err != nil {
 		return "Error: Failed to encrypt file using KS"
+	}
+
+	encryptedFileSize := len(ksEncryptedFile)
+	fmt.Printf("Encrypted file size: %d\n", encryptedFileSize)
+	if encryptedFileSize > 66386403 {
+		return "Error: File too large. Maximum size is about 26MB. (This is a known issue due to MySQL. Thank you for your understanding!)"
 	}
 
 	fmt.Println("EEEEEEE6")
@@ -245,6 +238,12 @@ func (a *App) IssueCertificate(universitySignature, studentSignature, dateOfIssu
 	}
 
 	fmt.Println("HERE4")
+
+	result, err := IssueCertificate(a.contract, certHash, universitySignature, studentSignature, dateOfIssuing, certUUID, universityPublicKeyString, studentPublicKeyString)
+	if err != nil {
+		return fmt.Sprintf("Error: Failed to issue certificate: %v", err)
+	}
+	fmt.Println("EEEEEEE3")
 
 	return fmt.Sprintf("Certificate issued successfully:\n%s\n\nUniversity Public Key:%s\n", result, universityPublicKeyString)
 }

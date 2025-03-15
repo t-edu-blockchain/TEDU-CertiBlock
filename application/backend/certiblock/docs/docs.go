@@ -424,6 +424,9 @@ const docTemplate = `{
         "data.CertificateOutputFull": {
             "type": "object",
             "properties": {
+                "base64File": {
+                    "type": "string"
+                },
                 "certHash": {
                     "type": "string"
                 },
@@ -431,9 +434,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "dateOfIssuing": {
-                    "type": "string"
-                },
-                "file": {
                     "type": "string"
                 },
                 "studentPublicKey": {

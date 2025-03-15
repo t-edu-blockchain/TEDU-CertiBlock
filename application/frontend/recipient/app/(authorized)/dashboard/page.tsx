@@ -1,8 +1,9 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { Button, Modal, QRCode, Table, Typography, Input, notification } from 'antd';
 import { BACKEND_URL } from '@/utils/env';
 import { useAuth } from '@/components/AuthProvider';
+import { decode as base64Decode } from 'base64-arraybuffer';
 
 const { Title, Text } = Typography;
 const { Search } = Input;
@@ -26,7 +27,7 @@ const Dashboard: React.FC = () => {
   // Demo data for multiple certificates
   const [certificates, setCertificates] = useState<Certificate[]>([]);
 
-  useEffect(() => {
+  const reloadCertificates = useCallback(() => {
     if (!auth.isAuthenticated) {
       notification.error({ message: 'Error', description: 'You are not authenticated' });
       return;
@@ -47,7 +48,11 @@ const Dashboard: React.FC = () => {
       setCertificates(data);
     }).catch(e => {
       notification.error({ message: 'Error', description: e.message });
-    })
+    });
+  }, [auth, setCertificates]);
+
+  useEffect(() => {
+    reloadCertificates();
   }, []);
 
   // Columns definition for the Ant Design Table
@@ -102,7 +107,10 @@ const Dashboard: React.FC = () => {
         throw new Error('Failed to fetch data');
       }
       const data = await res.json();
-      const blob = new Blob([data.file], { type: 'text/plain' });
+      const arrayBuffer = base64Decode(data.base64File)
+      console.log("base64File", data.base64File);
+      console.log("arrayBuffer", arrayBuffer);
+      const blob = new Blob([arrayBuffer], { type: 'application/octet-stream' });
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -123,7 +131,8 @@ const Dashboard: React.FC = () => {
 
   return (
     <div style={{ padding: '20px' }}>
-      <Title level={2}>Dashboard</Title>
+      <Title level={2}>{auth.isAuthenticated ? auth.fullName : "Unauthenticated"}</Title>
+      <Title level={4}>{"Public Key: " + (auth.isAuthenticated ? auth.publicKey : "Unauthorized")}</Title>
 
 
       {/* Search Input */}
@@ -132,6 +141,10 @@ const Dashboard: React.FC = () => {
         onChange={(e) => setSearchQuery(e.target.value)}
         style={{ marginBottom: '20px', width: '100%' }}
       />
+
+      <Button type="primary" style={{ marginBottom: '20px' }} onClick={() => reloadCertificates()}>
+        Reload Certificates
+      </Button>
 
       {/* Table to display certificates */}
       <Table

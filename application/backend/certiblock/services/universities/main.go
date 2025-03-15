@@ -4,15 +4,14 @@ import (
 	"CertiBlock/application/backend/certiblock/base"
 	"CertiBlock/application/backend/certiblock/base/data"
 	"CertiBlock/application/shared/utils"
-
-	"errors"
+	"fmt"
 )
 
 func SaveCertificateFile(context *base.ApplicationContext, fileUpload *data.CertificateFileUpload) (*string, error) {
 	universityPrivateKey := fileUpload.UniversityPrivateKey
 	/*universityPublicKey*/ _, err := utils.ComputePublicKeyString(universityPrivateKey)
 	if err != nil {
-		return nil, errors.New("error computing public key")
+		return nil, fmt.Errorf("error computing public key: %w", err)
 	}
 
 	_, err = context.DB.Exec(
@@ -25,7 +24,7 @@ func SaveCertificateFile(context *base.ApplicationContext, fileUpload *data.Cert
 		fileUpload.KSEncryptedFile,
 	)
 	if err != nil {
-		return nil, errors.New("error inserting cert file")
+		return nil, fmt.Errorf("error inserting cert file: %w", err)
 	}
 
 	return nil, nil

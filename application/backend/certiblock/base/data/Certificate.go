@@ -10,7 +10,7 @@ type CertificateOutput struct {
 
 type CertificateOutputFull struct {
 	CertificateOutput
-	File string `json:"file"`
+	Base64File string `json:"base64File"`
 }
 
 // Certificate as stored in the blockchain

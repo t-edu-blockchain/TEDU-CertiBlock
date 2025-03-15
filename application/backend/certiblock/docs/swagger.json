@@ -413,6 +413,9 @@
         "data.CertificateOutputFull": {
             "type": "object",
             "properties": {
+                "base64File": {
+                    "type": "string"
+                },
                 "certHash": {
                     "type": "string"
                 },
@@ -420,9 +423,6 @@
                     "type": "string"
                 },
                 "dateOfIssuing": {
-                    "type": "string"
-                },
-                "file": {
                     "type": "string"
                 },
                 "studentPublicKey": {

@@ -31,13 +31,13 @@ definitions:
     type: object
   data.CertificateOutputFull:
     properties:
+      base64File:
+        type: string
       certHash:
         type: string
       certUUID:
         type: string
       dateOfIssuing:
-        type: string
-      file:
         type: string
       studentPublicKey:
         type: string

@@ -5,7 +5,6 @@ import (
 	"CertiBlock/application/backend/certiblock/base/data"
 	educert "CertiBlock/application/backend/gateway"
 	"CertiBlock/application/shared/utils"
-	"encoding/base64"
 	"encoding/json"
 )
 
@@ -78,13 +77,8 @@ func GetOneCertificate(context *base.ApplicationContext, studentPrivateKeyString
 		return nil, err
 	}
 
-	file, err := base64.StdEncoding.DecodeString(base64File)
-	if err != nil {
-		return nil, err
-	}
-
 	return &data.CertificateOutputFull{
-		File: string(file),
+		Base64File: base64File,
 		CertificateOutput: data.CertificateOutput{
 			CertHash:            cert.CertHash,
 			CertUUID:            cert.CertUUID,
