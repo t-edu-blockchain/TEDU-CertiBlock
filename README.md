@@ -68,6 +68,11 @@ wails dev -tags webkit2_41
 
 To be accessed by students alike.
 
+First, in `application/backend/certiblock`, create a new file
+named `.env`. Specify the appropriate environment variables
+as instructed in `.env.example` (also in that same directory).
+The backend makes use of MySQL RDBMS.
+
 ```sh
 cd application/backend/certiblock
 ./run
