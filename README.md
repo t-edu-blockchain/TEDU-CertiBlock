@@ -10,7 +10,7 @@ A blockchain platform for decentralized, trustworthy issuance and verification o
       - [The Native App for Issuing Certificates](#the-native-app-for-issuing-certificates)
       - [The Web App for Viewing Personal Certificates](#the-web-app-for-viewing-personal-certificates)
       - [The Web App for Verifying Certificates by QR Codes](#the-web-app-for-verifying-certificates-by-qr-codes)
-  - [Technology](#technology)
+  - [Technologies](#technologies)
   - [Authors and Licensing](#authors-and-licensing)
 
 ## Run on Local Machine
@@ -81,7 +81,7 @@ npm run dev
 
 TODO
 
-## Technology
+## Technologies
 
 TODO
 
