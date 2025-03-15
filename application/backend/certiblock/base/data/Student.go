@@ -11,4 +11,9 @@ type StudentInput struct {
 type StudentOutput struct {
 	PrivateKey string `json:"privateKey"`
 	PublicKey  string `json:"publicKey"`
+	FullName   string `json:"fullName"`
+}
+
+type StudentAuth struct {
+	PrivateKey string `json:"privateKey"`
 }

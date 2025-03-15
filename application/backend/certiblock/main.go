@@ -10,6 +10,7 @@ import (
 
 	_ "CertiBlock/application/backend/certiblock/docs"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -59,6 +60,17 @@ func main() {
 	//////////////////////////////////////////////
 
 	router := gin.Default()
+
+	// CORS
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = false
+	config.AllowOrigins = []string{"http://localhost:3001"}
+	config.AllowMethods = []string{"POST", "GET", "PUT", "OPTIONS", "DELETE"}
+	config.AllowHeaders = []string{"Origin", "Content-Type", "Authorization", "Accept", "User-Agent", "Cache-Control", "Pragma"}
+	config.ExposeHeaders = []string{"Content-Length", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Content-Type"}
+	config.AllowCredentials = true
+	router.Use(cors.New(config))
+
 	apiRouter := router.Group("/api")
 	controllers.CountriesAPI(&context, apiRouter.Group("/countries"))
 	controllers.StudentsAPI(&context, apiRouter.Group("/students"))

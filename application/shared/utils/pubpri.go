@@ -26,9 +26,17 @@ func BigIntToString_Key(b *big.Int) string {
 func StringToBigInt_Key(s string) (*big.Int, error) {
 	x, _ := new(big.Int).SetString(s, 16)
 	if x == nil {
-		return nil, fmt.Errorf("Invalid big.Int string")
+		return nil, fmt.Errorf("invalid big.Int string")
 	}
 	return x, nil
+}
+
+func StringToBigInt_Ciphertext(s string) (*big.Int, error) {
+	return StringToBigInt_Key(s)
+}
+
+func BigIntToString_Ciphertext(b *big.Int) string {
+	return BigIntToString_Key(b)
 }
 
 ////////////////////////////////
@@ -127,7 +135,7 @@ func ElGamalEncryptString(publicKeyString, xString string) (string, string, erro
 		return "", "", err
 	}
 
-	return BigIntToString(y1), BigIntToString(y2), nil
+	return BigIntToString_Ciphertext(y1), BigIntToString_Ciphertext(y2), nil
 }
 
 func ElGamalDecrypt(a, y1, y2 *big.Int) (*big.Int, error) {
@@ -144,12 +152,12 @@ func ElGamalDecryptString(privateKeyString, y1String, y2String string) (string, 
 		return "", err
 	}
 
-	y1, err := StringToBigInt(y1String)
+	y1, err := StringToBigInt_Ciphertext(y1String)
 	if err != nil {
 		return "", err
 	}
 
-	y2, err := StringToBigInt(y2String)
+	y2, err := StringToBigInt_Ciphertext(y2String)
 	if err != nil {
 		return "", err
 	}
@@ -212,12 +220,12 @@ func PREEncryptString(reEncryptionKeyString, y1String, y2String string) (string,
 		return "", "", err
 	}
 
-	y1, err := StringToBigInt(y1String)
+	y1, err := StringToBigInt_Ciphertext(y1String)
 	if err != nil {
 		return "", "", err
 	}
 
-	y2, err := StringToBigInt(y2String)
+	y2, err := StringToBigInt_Ciphertext(y2String)
 	if err != nil {
 		return "", "", err
 	}
@@ -254,12 +262,12 @@ func PREDecryptString(studentPublicKeyString, qrPrivateKeyString, z1String, z2St
 		return "", err
 	}
 
-	z1, err := StringToBigInt(z1String)
+	z1, err := StringToBigInt_Ciphertext(z1String)
 	if err != nil {
 		return "", err
 	}
 
-	z2, err := StringToBigInt(z2String)
+	z2, err := StringToBigInt_Ciphertext(z2String)
 	if err != nil {
 		return "", err
 	}

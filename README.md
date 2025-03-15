@@ -30,5 +30,6 @@ cd application/nodeapp
 wails dev -tags webkit2_41
 
 
-cd application/backend/api 
-go run . ```
+cd application/backend/certiblock
+./run
+```

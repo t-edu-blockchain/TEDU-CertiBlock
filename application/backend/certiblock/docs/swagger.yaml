@@ -16,6 +16,34 @@ definitions:
       universityPrivateKey:
         type: string
     type: object
+  data.CertificateOutput:
+    properties:
+      certHash:
+        type: string
+      certUUID:
+        type: string
+      dateOfIssuing:
+        type: string
+      studentPublicKey:
+        type: string
+      universityPublicKey:
+        type: string
+    type: object
+  data.CertificateOutputFull:
+    properties:
+      certHash:
+        type: string
+      certUUID:
+        type: string
+      dateOfIssuing:
+        type: string
+      file:
+        type: string
+      studentPublicKey:
+        type: string
+      universityPublicKey:
+        type: string
+    type: object
   data.Country:
     properties:
       id:
@@ -35,6 +63,11 @@ definitions:
       content:
         type: string
     type: object
+  data.StudentAuth:
+    properties:
+      privateKey:
+        type: string
+    type: object
   data.StudentInput:
     properties:
       NIN:
@@ -50,6 +83,8 @@ definitions:
     type: object
   data.StudentOutput:
     properties:
+      fullName:
+        type: string
       privateKey:
         type: string
       publicKey:
@@ -61,6 +96,52 @@ definitions:
 info:
   contact: {}
 paths:
+  /api/countries:
+    get:
+      description: Get all countries
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/data.Country'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get all countries
+      tags:
+      - countries
+  /api/countries/{id}:
+    get:
+      description: Get a country by ID
+      parameters:
+      - description: Country ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/data.Country'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get a country by ID
+      tags:
+      - countries
   /api/qrs/create:
     post:
       consumes:
@@ -138,6 +219,65 @@ paths:
       summary: Register a student
       tags:
       - students
+  /api/students/certificates:
+    post:
+      consumes:
+      - application/json
+      description: Get all certificates of a student
+      parameters:
+      - description: Student data
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/data.StudentAuth'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/data.CertificateOutput'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get all certificates of a student
+      tags:
+      - students
+  /api/students/certificates/{certUUID}:
+    post:
+      consumes:
+      - application/json
+      description: Get one certificate of a student
+      parameters:
+      - description: Student data
+        in: body
+        name: student
+        required: true
+        schema:
+          $ref: '#/definitions/data.StudentAuth'
+      - description: Certificate UUID
+        in: path
+        name: certUUID
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/data.CertificateOutputFull'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/gin.H'
+      summary: Get one certificate of a student
+      tags:
+      - students
   /api/students/login:
     post:
       consumes:
@@ -190,50 +330,4 @@ paths:
       summary: Add a certificate file
       tags:
       - universities
-  /countries:
-    get:
-      description: Get all countries
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/data.Country'
-            type: array
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Get all countries
-      tags:
-      - countries
-  /countries/{id}:
-    get:
-      description: Get a country by ID
-      parameters:
-      - description: Country ID
-        in: path
-        name: id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/data.Country'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/gin.H'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/gin.H'
-      summary: Get a country by ID
-      tags:
-      - countries
 swagger: "2.0"

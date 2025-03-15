@@ -20,7 +20,7 @@ func CountriesAPI(context *base.ApplicationContext, r *gin.RouterGroup) {
 // @Produce json
 // @Success 200 {array} data.Country
 // @Failure 500 {object} gin.H
-// @Router /countries [get]
+// @Router /api/countries [get]
 func GetCountries(context *base.ApplicationContext) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		countries, err := countries.GetAll(context)
@@ -44,22 +44,7 @@ func GetCountries(context *base.ApplicationContext) func(c *gin.Context) {
 // @Success 200 {object} data.Country
 // @Failure 400 {object} gin.H
 // @Failure 404 {object} gin.H
-// @Router /countries/{id} [get]
-// GetCountryById handles the request to retrieve a country by its ID.
-// It expects an ID parameter in the URL, converts it to an integer, and
-// fetches the corresponding country from the database. If the ID is invalid
-// or the country is not found, it returns an appropriate error response.
-//
-// Parameters:
-// - context: A pointer to the base.ApplicationContext which holds the application context.
-//
-// Returns:
-// - A function that takes a gin.Context and processes the request to get a country by ID.
-//
-// Responses:
-// - 400 Bad Request: If the ID parameter is not a valid integer.
-// - 404 Not Found: If no country is found with the given ID.
-// - 200 OK: If the country is found, returns the country data in JSON format.
+// @Router /api/countries/{id} [get]
 func GetCountryById(context *base.ApplicationContext) func(c *gin.Context) {
 	return func(c *gin.Context) {
 		id := c.Param("id")

@@ -15,6 +15,76 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/api/countries": {
+            "get": {
+                "description": "Get all countries",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "countries"
+                ],
+                "summary": "Get all countries",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/data.Country"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/countries/{id}": {
+            "get": {
+                "description": "Get a country by ID",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "countries"
+                ],
+                "summary": "Get a country by ID",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Country ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/data.Country"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
         "/api/qrs/create": {
             "post": {
                 "description": "Create a QR code",
@@ -133,6 +203,96 @@ const docTemplate = `{
                 }
             }
         },
+        "/api/students/certificates": {
+            "post": {
+                "description": "Get all certificates of a student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "Get all certificates of a student",
+                "parameters": [
+                    {
+                        "description": "Student data",
+                        "name": "student",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/data.StudentAuth"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/data.CertificateOutput"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/students/certificates/{certUUID}": {
+            "post": {
+                "description": "Get one certificate of a student",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "students"
+                ],
+                "summary": "Get one certificate of a student",
+                "parameters": [
+                    {
+                        "description": "Student data",
+                        "name": "student",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/data.StudentAuth"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "Certificate UUID",
+                        "name": "certUUID",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/data.CertificateOutputFull"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/gin.H"
+                        }
+                    }
+                }
+            }
+        },
         "/api/students/login": {
             "post": {
                 "description": "Login a student",
@@ -212,76 +372,6 @@ const docTemplate = `{
                     }
                 }
             }
-        },
-        "/countries": {
-            "get": {
-                "description": "Get all countries",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "countries"
-                ],
-                "summary": "Get all countries",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/data.Country"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            }
-        },
-        "/countries/{id}": {
-            "get": {
-                "description": "Get a country by ID",
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "countries"
-                ],
-                "summary": "Get a country by ID",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Country ID",
-                        "name": "id",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/data.Country"
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/gin.H"
-                        }
-                    }
-                }
-            }
         }
     },
     "definitions": {
@@ -307,6 +397,49 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "universityPrivateKey": {
+                    "type": "string"
+                }
+            }
+        },
+        "data.CertificateOutput": {
+            "type": "object",
+            "properties": {
+                "certHash": {
+                    "type": "string"
+                },
+                "certUUID": {
+                    "type": "string"
+                },
+                "dateOfIssuing": {
+                    "type": "string"
+                },
+                "studentPublicKey": {
+                    "type": "string"
+                },
+                "universityPublicKey": {
+                    "type": "string"
+                }
+            }
+        },
+        "data.CertificateOutputFull": {
+            "type": "object",
+            "properties": {
+                "certHash": {
+                    "type": "string"
+                },
+                "certUUID": {
+                    "type": "string"
+                },
+                "dateOfIssuing": {
+                    "type": "string"
+                },
+                "file": {
+                    "type": "string"
+                },
+                "studentPublicKey": {
+                    "type": "string"
+                },
+                "universityPublicKey": {
                     "type": "string"
                 }
             }
@@ -341,6 +474,14 @@ const docTemplate = `{
                 }
             }
         },
+        "data.StudentAuth": {
+            "type": "object",
+            "properties": {
+                "privateKey": {
+                    "type": "string"
+                }
+            }
+        },
         "data.StudentInput": {
             "type": "object",
             "properties": {
@@ -364,6 +505,9 @@ const docTemplate = `{
         "data.StudentOutput": {
             "type": "object",
             "properties": {
+                "fullName": {
+                    "type": "string"
+                },
                 "privateKey": {
                     "type": "string"
                 },
