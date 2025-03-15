@@ -75,6 +75,7 @@ function App() {
                     certUUID: '',
                     universityPK: '',
                     studentPK: '',
+                    backendServerUrl: '',
                 });
             })
             .catch((err) => setResultText(`Error: ${err}`));
