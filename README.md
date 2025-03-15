@@ -1,35 +1,90 @@
-Install wsl2 - (Windows)
+# CertiBlock
 
-Install Wails: https://wails.io/docs/gettingstarted/installation
+A blockchain platform for decentralized, trustworthy issuance and verification of certificates worldwide.
 
-Khởi động wsl trên máy
+- [CertiBlock](#certiblock)
+  - [Run on Local Machine](#run-on-local-machine)
+    - [Requirements](#requirements)
+    - [Setup Network](#setup-network)
+    - [Run Applications](#run-applications)
+      - [The Native App for Issuing Certificates](#the-native-app-for-issuing-certificates)
+      - [The Web App for Viewing Personal Certificates](#the-web-app-for-viewing-personal-certificates)
+      - [The Web App for Verifying Certificates by QR Codes](#the-web-app-for-verifying-certificates-by-qr-codes)
+  - [Technology](#technology)
+  - [Authors and Licensing](#authors-and-licensing)
 
-Install Go for Linux:
-```
-wget https://go.dev/dl/go1.24.1.linux-amd64.tar.gz
-sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.24.1.linux-amd64.tar.gz
-echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
-source ~/.bashrc
-```
-Install Fabric
-Get the install script:
+## Run on Local Machine
+
+### Requirements
+
+- **A Linux-based system.** On Windows, use WSL2.
+- **Install Go.** One way to do that is as follows:
+
+    ```sh
+    wget https://go.dev/dl/go1.24.1.linux-amd64.tar.gz
+    sudo rm -rf /usr/local/go && sudo tar -C /usr/local -xzf go1.24.1.linux-amd64.tar.gz
+    echo 'export PATH=$PATH:/usr/local/go/bin' >> ~/.bashrc
+    source ~/.bashrc
+    ```
+
+- **Install Wails:** <https://wails.io/docs/gettingstarted/installation>
+- **Install Fabric:**
+    - Get the install script:
+
+        ```sh
+        curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
+        ```
+
+    - Install bin and docker components:
+
+        ```sh
+        ./install-fabric.sh docker binary
+        ```
+
+### Setup Network
+
+In project root:
+
 ```sh
-curl -sSLO https://raw.githubusercontent.com/hyperledger/fabric/main/scripts/install-fabric.sh && chmod +x install-fabric.sh
-```
-Install bin and docker:
-```sh
-./install-fabric.sh docker binary
-```
-Run
-```
-cd CertiBlock/network
+cd network
 ./network.sh up createChannel -ca -c mychannel -s couchdb
 ./network.sh deployCC -ccn certicontract -ccp ../application/backend/chaincode -ccv 1 -ccl go
+```
 
+### Run Applications
+
+#### The Native App for Issuing Certificates
+
+To be run on each university's private machines.
+
+```sh
 cd application/nodeapp
+wails dev
+# Or, if you're using Ubuntu 24.04 or some new system
 wails dev -tags webkit2_41
+```
 
+#### The Web App for Viewing Personal Certificates
 
+To be accessed by students alike.
+
+```sh
 cd application/backend/certiblock
 ./run
+
+cd ../../../application/frontend/recipient
+npm i
+npm run dev
 ```
+
+#### The Web App for Verifying Certificates by QR Codes
+
+TODO
+
+## Technology
+
+TODO
+
+## Authors and Licensing
+
+TODO
